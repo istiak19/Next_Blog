@@ -4,7 +4,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative w-full overflow-hidden pt-12 pb-10 ">
+    <footer className="relative w-full overflow-hidden pt-12 pb-10">
       {/* Background Layer */}
       <div
         className="absolute inset-0 z-0"
@@ -15,7 +15,7 @@ export default function Footer() {
       />
 
       {/* Content Layer */}
-      <div className="relative z-10 container mx-auto px-6 sm:px-8 md:px-12 lg:px-20 xl:px-28 text-white">
+      <div className="relative z-10 container mx-auto px-6 sm:px-8 text-white">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
           {/* Left */}
           <div>
