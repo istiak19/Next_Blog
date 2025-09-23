@@ -15,7 +15,7 @@ export const create = async (data: FormData) => {
         tags: tags ? tags.toString().split(",").map((tag) => tag.trim()) : [],
         isFeatured: Boolean(isFeatured)
     };
-    console.log(modifiedData)
+    // console.log(modifiedData)
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`, {
         method: "POST",
         headers: {

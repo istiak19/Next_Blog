@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BlogCard from "@/components/modules/Blogs/BlogCard";
 import Hero from "@/components/modules/Home/Hero";
+import { getByPost } from "@/services/postService";
 
 export default async function HomePage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/post`, {
-    next: {
-      tags: ["BLOGS"]
-    }
-  });
-  const { data: blogs } = await res.json();
+  const { data: blogs } = await getByPost();
 
   return (
     <div>
