@@ -3,6 +3,7 @@ import getServer from "@/helpers/getServerSession";
 const DashboardHomePage = async () => {
   const session = await getServer();
   const quote = "The secret of getting ahead is getting started. – Mark Twain";
+  console.log(session)
 
 
   return (

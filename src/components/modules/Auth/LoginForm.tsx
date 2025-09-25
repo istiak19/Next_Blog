@@ -15,8 +15,8 @@ import {
 } from "@/components/ui/form";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
-import { login } from "@/actions/auth";
-import { useRouter } from "next/navigation";
+// import { login } from "@/actions/auth";
+// import { useRouter } from "next/navigation";
 
 type LoginFormValues = {
     email: string;
@@ -31,16 +31,20 @@ export default function LoginForm() {
         },
     });
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const onSubmit = async (values: LoginFormValues) => {
         console.log("Login submitted:", values);
         try {
-            const res = await login(values);
-            console.log(res)
-            if (res?.id) {
-                router.push("/");
-            }
+            // const res = await login(values);
+            // console.log(res)
+            // if (res?.id) {
+            //     router.push("/");
+            // }
+            signIn("credentials", {
+                ...values,
+                callbackUrl: "/dashboard"
+            })
         } catch (error) {
             console.log(error)
         }
