@@ -1,52 +1,145 @@
-import Form from "next/form";
+"use client";
+
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
 
-const LoginForm = () => {
-    return (
-        <Form
-            action="/login"
-            className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4 w-full"
-        >
-            <h2 className="text-xl font-semibold mb-4">Create Login</h2>
-
-            {/* Email */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="email">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            {/* Content */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="content">
-                    Password
-                </label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 transition"
-            >
-                Submit
-            </button>
-
-            <div className="mt-5">
-                <Link href="/register">Register Page</Link>
-            </div>
-        </Form>
-    );
+type LoginFormValues = {
+    email: string;
+    password: string;
 };
 
-export default LoginForm;
+export default function LoginForm() {
+    const form = useForm<LoginFormValues>({
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
+
+    const onSubmit = (values: LoginFormValues) => {
+        console.log("Login submitted:", values);
+    };
+
+    const handleSocialLogin = (provider: "google" | "github") => {
+        console.log(`Login with ${provider}`);
+        signIn(provider, {
+            callbackUrl: "/dashboard"
+        })
+    };
+
+    return (
+        <div className="flex justify-center items-center bg-gray-50">
+            <div className="w-full max-w-2xl bg-white p-5 rounded-lg shadow-md">
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-3 w-full max-w-md"
+                    >
+                        <h2 className="text-3xl font-bold text-center">Login</h2>
+
+                        {/* Email */}
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Password */}
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <Button type="submit" className="w-full mt-2">
+                            Login
+                        </Button>
+
+                        <div className="flex items-center justify-center space-x-2">
+                            <div className="h-px w-16 bg-gray-300" />
+                            <span className="text-sm text-gray-500">or continue with</span>
+                            <div className="h-px w-16 bg-gray-300" />
+                        </div>
+                    </form>
+                </Form>
+                {/* Social Login Buttons */}
+                <div className="flex flex-col gap-3 mt-4">
+                    <Button
+                        variant="outline"
+                        className="flex items-center justify-center gap-2"
+                        onClick={() => handleSocialLogin("github")}
+                    >
+                        {/* GitHub */}
+                        <Image
+                            src="https://img.icons8.com/ios-glyphs/24/github.png"
+                            alt="GitHub"
+                            className="w-5 h-5 cursor-pointer"
+                            width={20}
+                            height={20}
+                        />
+                        Login with GitHub
+                    </Button>
+
+                    <Button
+                        variant="outline"
+                        className="flex items-center justify-center gap-2"
+                        onClick={() => handleSocialLogin("google")}
+                    >
+                        {/* Google */}
+                        <Image
+                            src="https://img.icons8.com/color/24/google-logo.png"
+                            alt="Google"
+                            className="w-5 h-5 cursor-pointer"
+                            width={20}
+                            height={20}
+                        />
+                        Login with Google
+                    </Button>
+                </div>
+                <p className="text-center text-sm text-gray-500 mt-4">
+                    Don’t have an account?{" "}
+                    <Link href="/register" className="text-blue-500 hover:underline">
+                        Register
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+};

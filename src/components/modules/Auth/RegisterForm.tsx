@@ -1,78 +1,125 @@
-import Form from "next/form";
+"use client";
+
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-const RegisterForm = () => {
-    return (
-        <Form
-            action="/register"
-            className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-4 w-full"
-        >
-            <h2 className="text-xl font-semibold mb-4 text-center">Create Register</h2>
-
-            {/*Name */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="email">
-                    Name
-                </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            {/* Email */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="email">
-                    Email
-                </label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            {/* Password */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="content">
-                    Password
-                </label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            {/* Password */}
-            <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="content">
-                    Phone Number
-                </label>
-                <input
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    className="w-full rounded-md border px-3 py-2 focus:ring focus:ring-blue-200"
-                />
-            </div>
-
-            <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-700 transition"
-            >
-                Submit
-            </button>
-
-            <div className="mt-5">
-                <Link href="/login">Login Page</Link>
-            </div>
-        </Form>
-    );
+type RegisterFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
 };
 
-export default RegisterForm;
+export default function RegisterForm() {
+  const form = useForm<RegisterFormValues>({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (values: RegisterFormValues) => {
+    console.log("Form submitted:", values);
+  };
+
+  return (
+    <div className="flex justify-center items-center bg-gray-50">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 w-full max-w-2xl bg-white p-8 rounded-lg shadow-md"
+        >
+          <h2 className="text-3xl font-bold text-center">Register Now</h2>
+          {/* Name */}
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Enter your email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Phone */}
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your phone number" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Password */}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Enter your password"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" className="w-full mt-2">
+            Register
+          </Button>
+
+          <p className="text-center text-sm text-gray-500 mt-4">
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-500 hover:underline cursor-pointer">
+              Login
+            </Link>
+          </p>
+        </form>
+      </Form>
+    </div>
+  );
+};
